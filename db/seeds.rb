@@ -1,4 +1,4 @@
-# https://github.com/duleorlovic/minitest_rails/blob/main/db/seeds.rb
+# https://github.com/trkin/rails_minitest/blob/main/db/seeds.rb
 logger = Logger.new($stdout)
 Rake::Task["db:fixtures:load"].invoke
 

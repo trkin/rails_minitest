@@ -1,4 +1,4 @@
-# https://github.com/duleorlovic/minitest_rails/blob/main/test/a/assert_equal_when_sorted.rb
+# https://github.com/trkin/rails_minitest/blob/main/test/a/assert_equal_when_sorted.rb
 module MiniTest::Assertions
   # Fails unless <tt>exp</tt> and <tt>act</tt> are both arrays and
   # contain the same elements which are sorted by keys (default is :id)
