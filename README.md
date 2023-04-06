@@ -204,8 +204,9 @@ Defining fixtures:
   course:
     language_id: 5
     # note that this is just yml so you can not use
-    language_id: my_language.id
-    # but you can use erb
+    # language_id: my_language.id
+    # but you can use erb to find id which will be generated. Note that it will
+    # the same id in multiple tables if you use the same label
     language_id: <%= ActiveRecord::FixtureSet.identify :my_language %>
   ```
 * `pre_loaded_fixtures`
@@ -305,11 +306,6 @@ class TaskTest < ActiveSupport::TestCase
 
   test 'valid fixture' do
     assert_valid_fixture activities
-  end
-
-  # test/test_helper.rb
-  def assert_valid_fixture(items)
-    assert items.map(&:valid?).all?, (items.reject(&:valid?).map { |c| (c.respond_to?(:name) ? "#{c.name} " : '') + c.errors.full_messages.to_sentence })
   end
 end
 ~~~
@@ -417,8 +413,9 @@ class MyServiceTest < ActiveSupport::TestCase
     end
   end
 
-  # you could also use in setup and teardown
+  # you could also use in setup and teardown in minitest
   # https://github.com/vcr/vcr/wiki/Usage-with-MiniTest
+  # this is for rspec
    before do
       VCR.insert_cassette name
     end
@@ -741,7 +738,7 @@ Add a line in `test/test_helper.rb` to include files from `test/a`
 # test/test_helper.rb
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
-Dir[Rails.root.join('test/a/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('test/a/**/*.rb')].sort.each { |f| require f }
 require 'rails/test_help'
 require 'minitest/autorun'
 require 'webmock/minitest'
@@ -1118,3 +1115,23 @@ end
   end
   ```
   hooks https://test-unit.github.io/test-unit/en/Test/Unit/TestCase.html
+
+* to use bullet you need to wrap
+  ```
+  # test/helpers/paper_trail_helper_test.rb
+  def test_n_plus_1
+    Bullet.start_request
+    results = set_all_versions_db user
+    results.each do |versions|
+      version.user.profile.avatar.attachment.nil?
+      case version.item_type
+      when "Post"
+        version.post.content.body.nil?
+        version.post.likes.nil?
+      else
+      end
+    end
+    Bullet.perform_out_of_channel_notifications if Bullet.notification?
+    Bullet.end_request
+  end
+  ```

@@ -15,4 +15,9 @@ class ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
   # Add more helper methods to be used by all tests here...
+
+  # assert_valid_fixture users
+  def assert_valid_fixture(items)
+    assert items.map(&:valid?).all?, (items.reject(&:valid?).map { |c| (c.respond_to?(:name) ? "#{c.name} " : "") + c.errors.full_messages.to_sentence })
+  end
 end
