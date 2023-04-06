@@ -7,3 +7,6 @@ DEFAULTS: &DEFAULTS
 user:
   <<: *DEFAULTS
 
+unconfirmed:
+  <<: *DEFAULTS
+  confirmed_at:
